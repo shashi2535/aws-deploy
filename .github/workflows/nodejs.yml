@@ -5,26 +5,23 @@ name: Node.js Package
 
 on:
   push:
-   branches: ["main"]
+    branches: [ main ]
 
 jobs:
   build:
-    runs-on: self-hosted
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - run: npm ci
-
-  publish-npm:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [ 14, 16, 18 ]
+
+    name: Node ${{ matrix.node }} sample
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Run linting rules and tests
+        uses: actions/setup-node@v3
         with:
-          node-version: 18.17.1
-          registry-url: https://registry.npmjs.org/
+          node-version: ${{ matrix.node }}
       - run: npm ci
       - run: pm2 restart ecosystem.config.js
       
