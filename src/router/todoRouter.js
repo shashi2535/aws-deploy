@@ -9,6 +9,12 @@ todoRouter.post(
 );
 
 todoRouter.get("/todo", todoController.getTodo);
+todoRouter.get("/home", (req,res)=>{
+return res.json({
+  status:true,
+  message:"hello from cicd pipeline"
+})
+});
 
 module.exports = {
   todoRouter,
